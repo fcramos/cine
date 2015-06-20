@@ -19,3 +19,19 @@ class Actor(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Genre(models.Model):
+    """
+    The purpose of this model is manage movie genres
+    """
+    name = models.CharField(_('nome'), max_length=200, )
+    slug = models.SlugField()
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = _(u'Gênero')
+        verbose_name_plural = _(u'Gêneros')
+
+    def __unicode__(self):
+        return self.name
