@@ -35,3 +35,23 @@ class Genre(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Movie(models.Model):
+    """
+    The purpose of this model is manage movies
+    """
+    name = models.CharField(_('nome'), max_length=200, )
+    slug = models.SlugField()
+    synopsis = models.TextField(_('sinopse'), )
+    genres = models.ManyToManyField('Genre', verbose_name=_(u'Gêneros'), )
+    actors = models.ManyToManyField('Actor', verbose_name=_('Atores'), )
+    cover = models.ImageField(_('capa'), upload_to='covers', )
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = _('Filme')
+        verbose_name_plural = _('Filmes')
+
+    def __unicode__(self):
+        return self.name
