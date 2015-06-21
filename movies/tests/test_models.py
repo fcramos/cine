@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.test import TestCase
-from .models import Actor, Genre, Movie
+from movies.models import Actor, Genre, Movie
 
 
 class ActorTest(TestCase):
