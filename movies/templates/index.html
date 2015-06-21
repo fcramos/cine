@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+	<main id="Content" class="fix">
+		<header class="fix">
+			<h1 class="fl">Listagem de filmes</h1>
+			<form action="/">
+				<select name="order" id="order" class="fr" onchange="this.parentElement.submit()">
+					<option value="">Ordenar por:</option>
+					<option value="name">a - z</option>
+					<option value="-name">z - a</option>
+				</select>
+			</form>
+		</header>
+
+		<section id="listagem" class='fix'>
+			<ul>
+        {% for movie in movies %}
+				  <li class="fl{% if forloop.counter|divisibleby:"5" %} last{% endif %}">
+            <a href="filme/{{ movie.slug }}">
+              <img src="{{ MEDIA_URL }}{{ movie.cover }}" alt="">
+            </a>
+          </li>
+        {% endfor %}
+			</ul>
+		</section>
+
+	</main>
+{% endblock content %}
