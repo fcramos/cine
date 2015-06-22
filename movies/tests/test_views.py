@@ -95,3 +95,50 @@ class MovieDetailTest(TestCase):
         'May have ten related movies.'
         self.assertContains(self.response, '<li class="fl"', 8)
         self.assertContains(self.response, '<li class="fl last"', 2)
+
+
+class GenreMovieListTest(TestCase):
+    def setUp(self):
+        self.genre = Genre.objects.create(
+            name='Action',
+            slug='action'
+        )
+
+        self.movies = []
+        names = ['Aaa', 'Bbb', 'Ccc', 'Ddd', 'Eee', 'Fff', 'Ggg', 'Hhh', 'Iii', 'Jjj']
+        for x, name in enumerate(names):
+            self.movies.append(
+                Movie.objects.create(
+                    name=name,
+                    synopsis='Any synopsis from movie.'
+                )
+            )
+
+            if x % 2 == 0:
+                self.movies[x].genres.add(self.genre)
+
+        self.response = self.client.get(r('movies:genre', args=[self.genre.slug]))
+
+    def test_get(self):
+        'GET /genre/1 may result in 200.'
+        self.assertEqual(200, self.response.status_code)
+
+    def test_html(self):
+        'Check is a genre movies data was rendered.'
+        self.assertContains(self.response, 'Action')
+        self.assertContains(self.response, '<li class="fl"', 4)
+        self.assertContains(self.response, '<li class="fl last"', 1)
+
+    def test_filter(self):
+        'Filter may order movies in alphabetical order.'
+        self.response = self.client.get(r('movies:genre', args=[self.genre.slug]), {'order': 'name'})
+        movies = self.response.context['movies']
+        self.assertEqual(movies[0], self.movies[0])
+        self.assertEqual(movies[4], self.movies[8])
+
+    def test_filter_inverse(self):
+        'Filter may order movies in inverse alphabetical order.'
+        self.response = self.client.get(r('movies:genre', args=[self.genre.slug]), {'order': '-name'})
+        movies = self.response.context['movies']
+        self.assertEqual(movies[0], self.movies[8])
+        self.assertEqual(movies[4], self.movies[0])

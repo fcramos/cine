@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from itertools import chain
-from models import Movie
+from models import Movie, Genre
 
 
 def home(request):
@@ -47,3 +47,16 @@ def detail(request, slug):
         'movies': related_movies
     }
     return render(request, 'interna.html', context)
+
+
+def genre(request, slug):
+    this_genre = Genre.objects.get(slug=slug)
+    movies = Movie.objects.filter(genres=this_genre.pk)
+    if request.GET:
+        movies = movies.order_by(request.GET['order'])
+
+    context = {
+        'genre': this_genre,
+        'movies': movies
+    }
+    return render(request, 'genero.html', context)
