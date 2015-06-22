@@ -142,3 +142,35 @@ class GenreMovieListTest(TestCase):
         movies = self.response.context['movies']
         self.assertEqual(movies[0], self.movies[8])
         self.assertEqual(movies[4], self.movies[0])
+
+
+class ActorPageTest(TestCase):
+    def setUp(self):
+        self.actor = Actor.objects.create(
+            name='Tom Cruise',
+            slug='tom-cruise',
+            country='EUA'
+        )
+
+        self.movies = []
+        for x in range(10):
+            self.movies.append(
+                Movie.objects.create(
+                    name='Any movie',
+                    synopsis='Any synopsis from movie.'
+                )
+            )
+            self.movies[x].actors.add(self.actor)
+
+        self.response = self.client.get(r('movies:actor', args=[self.actor.slug]))
+
+    def test_get(self):
+        'GET /genre/1 may result in 200.'
+        self.assertEqual(200, self.response.status_code)
+
+    def test_html(self):
+        'Check is a Actor page was rendered.'
+        self.assertContains(self.response, 'Tom Cruise')
+        self.assertContains(self.response, 'EUA')
+        self.assertContains(self.response, '<li class="fl"', 8)
+        self.assertContains(self.response, '<li class="fl last"', 2)

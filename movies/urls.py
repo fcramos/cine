@@ -6,4 +6,5 @@ urlpatterns = patterns('movies.views',
     url(r'^$', 'home', name='home'),
     url(r'^filme/(?P<slug>[\w-]+)/$', 'detail', name='detail'),
     url(r'^genero/(?P<slug>[\w-]+)/$', 'genre', name='genre'),
+    url(r'^ator/(?P<slug>[\w-]+)/$', 'actor', name='actor'),
 )

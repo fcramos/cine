@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from itertools import chain
-from models import Movie, Genre
+from models import Movie, Genre, Actor
 
 
 def home(request):
@@ -60,3 +60,14 @@ def genre(request, slug):
         'movies': movies
     }
     return render(request, 'genero.html', context)
+
+
+def actor(request, slug):
+    this_actor = Actor.objects.get(slug=slug)
+    movies = Movie.objects.filter(actors=this_actor.pk)
+
+    context = {
+        'actor': this_actor,
+        'movies': movies
+    }
+    return render(request, 'artista.html', context)

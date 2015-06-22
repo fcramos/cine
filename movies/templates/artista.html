@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+	<main id="Content" class="fix">
+		<header class="fix">
+			<h1>Atores</h1>
+		</header>
+		
+		<section id="Infos" class='fix'>
+			<figure class="fl"><img src="{{ MEDIA_URL }}{{ actor.photo }}" alt=""></figure>
+
+			<article class="fl">
+				<p class="tit">Ator</p>
+				<h2>{{ actor.name }}</h2>
+				<p class="txt"><strong>País:</strong> {{ actor.country }}</p>
+				
+			</article>
+
+		</section>
+		<section id="listagem" class='fix'>
+			<header class="fix">
+				<h2>Filmes Relacionados</h2>
+			</header>
+			<ul>
+        {% for movie in movies %}
+				  <li class="fl{% if forloop.counter|divisibleby:"5" %} last{% endif %}">
+            <a href="/filme/{{ movie.slug }}">
+              <img src="{{ MEDIA_URL }}{{ movie.cover }}" alt="">
+            </a>
+          </li>
+        {% endfor %}
+			</ul>
+		</section>
+	</main>
+{% endblock content %}
